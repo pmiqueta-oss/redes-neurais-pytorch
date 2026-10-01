@@ -1,0 +1,851 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyM41cXYcbg94RbiqVEfvdep",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/pmiqueta-oss/redes-neurais-pytorch/blob/main/01_fundamentos_redes_neurais.ipynb.\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "XCCPxHHh0Dct",
+        "outputId": "b2bdd785-10cd-44d9-900c-2d0bc03aed1e"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Qual é o seu nome? patricius\n",
+            "Olá, patricius! Vamos praticar Python.\n",
+            "\n",
+            "Digite a sua idade: 43\n",
+            "Você é maior de idade.\n",
+            "\n",
+            "Gerando uma contagem de estudos:\n",
+            "Passo 1: Aprender Variáveis\n",
+            "Passo 2: Aprender Condicionais\n",
+            "Passo 3: Aprender Loops\n",
+            "Passo 4: Aprender Funções\n"
+          ]
+        }
+      ],
+      "source": [
+        "# 1. Variáveis e entrada de dados\n",
+        "nome = input(\"Qual é o seu nome? \")\n",
+        "print(f\"Olá, {nome}! Vamos praticar Python.\\n\")\n",
+        "\n",
+        "# 2. Estrutura condicional (if / else)\n",
+        "idade = int(input(\"Digite a sua idade: \"))\n",
+        "\n",
+        "if idade >= 18:\n",
+        "    print(\"Você é maior de idade.\")\n",
+        "else:\n",
+        "    print(\"Você é menor de idade.\")\n",
+        "\n",
+        "# 3. Loop (for) e Listas\n",
+        "print(\"\\nGerando uma contagem de estudos:\")\n",
+        "topicos = [\"Variáveis\", \"Condicionais\", \"Loops\", \"Funções\"]\n",
+        "\n",
+        "for index, topico in enumerate(topicos, 1):\n",
+        "    print(f\"Passo {index}: Aprender {topico}\")"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import torch\n",
+        "import torch.nn as nn\n",
+        "\n",
+        "# 1. Definindo uma Rede Neural / Neurônio Simples com PyTorch\n",
+        "class NeuronioPyTorch(nn.Module):\n",
+        "    def __init__(self, entradas):\n",
+        "        super(NeuronioPyTorch, self).__init__()\n",
+        "        # nn.Linear cria os pesos (weights) e o viés (bias) automaticamente\n",
+        "        self.camada_linear = nn.Linear(entradas, 1)\n",
+        "        # Função de ativação Sigmoide\n",
+        "        self.ativacao = nn.Sigmoid()\n",
+        "\n",
+        "    def forward(self, x):\n",
+        "        # Passo de propagação (forward pass)\n",
+        "        soma = self.camada_linear(x)\n",
+        "        saida = self.ativacao(soma)\n",
+        "        return saida\n",
+        "\n",
+        "# 2. Criando o modelo com 3 entradas\n",
+        "modelo = NeuronioPyTorch(entradas=3)\n",
+        "\n",
+        "# 3. Criando dados de exemplo (Tensores PyTorch)\n",
+        "# Simulando 2 pacientes, cada um com 3 exames\n",
+        "dados_entrada = torch.tensor([\n",
+        "    [0.8, 0.4, 0.9],  # Paciente 1\n",
+        "    [0.1, 0.2, 0.3]   # Paciente 2\n",
+        "], dtype=torch.float32)\n",
+        "\n",
+        "# 4. Processando os dados no modelo\n",
+        "saida = modelo(dados_entrada)\n",
+        "\n",
+        "# 5. Exibindo os resultados\n",
+        "print(\"--- PROCESSAMENTO COM PYTORCH ---\")\n",
+        "print(\"Dados de Entrada (Tensor):\\n\", dados_entrada)\n",
+        "print(\"\\nPesos da rede:\\n\", modelo.camada_linear.weight.data)\n",
+        "print(\"\\nViés (Bias):\\n\", modelo.camada_linear.bias.data)\n",
+        "print(\"\\nSaída Ativada (Probabilidade para cada paciente):\\n\", saida.detach\n",
+        "\n"
+      ],
+      "metadata": {
+        "id": "12a7EIaW2453"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import torch\n",
+        "import torch.nn as nn\n",
+        "\n",
+        "# 1. Definindo uma Rede Neural / Neurônio Simples com PyTorch\n",
+        "class NeuronioPyTorch(nn.Module):\n",
+        "    def __init__(self, entradas):\n",
+        "        super(NeuronioPyTorch, self).__init__()\n",
+        "        # nn.Linear cria os pesos (weights) e o viés (bias) automaticamente\n",
+        "        self.camada_linear = nn.Linear(entradas, 1)\n",
+        "        # Função de ativação Sigmoide\n",
+        "        self.ativacao = nn.Sigmoid()\n",
+        "\n",
+        "    def forward(self, x):\n",
+        "        # Passo de propagação (forward pass)\n",
+        "        soma = self.camada_linear(x)\n",
+        "        saida = self.ativacao(soma)\n",
+        "        return saida\n",
+        "\n",
+        "# 2. Criando o modelo com 3 entradas\n",
+        "modelo = NeuronioPyTorch(entradas=3)\n",
+        "\n",
+        "# 3. Criando dados de exemplo (Tensores PyTorch)\n",
+        "# Simulando 2 pacientes, cada um com 3 exames\n",
+        "dados_entrada = torch.tensor([\n",
+        "    [0.8, 0.4, 0.9],  # Paciente 1\n",
+        "    [0.1, 0.2, 0.3]   # Paciente 2\n",
+        "], dtype=torch.float32)\n",
+        "\n",
+        "# 4. Processando os dados no modelo\n",
+        "saida = modelo(dados_entrada)\n",
+        "\n",
+        "# 5. Exibindo os resultados\n",
+        "print(\"--- PROCESSAMENTO COM PYTORCH ---\")\n",
+        "print(\"Dados de Entrada (Tensor):\\n\", dados_entrada)\n",
+        "print(\"\\nPesos da rede:\\n\", modelo.camada_linear.weight.data)\n",
+        "print(\"\\nViés (Bias):\\n\", modelo.camada_linear.bias.data)\n",
+        "print(\"\\nSaída Ativada (Probabilidade para cada paciente):\\n\", saida.detach())\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "k6thtqkh3mlF",
+        "outputId": "b7d67b90-9086-4410-89f7-8d15dd81e9f1"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "--- PROCESSAMENTO COM PYTORCH ---\n",
+            "Dados de Entrada (Tensor):\n",
+            " tensor([[0.8000, 0.4000, 0.9000],\n",
+            "        [0.1000, 0.2000, 0.3000]])\n",
+            "\n",
+            "Pesos da rede:\n",
+            " tensor([[-0.5406,  0.1226,  0.4149]])\n",
+            "\n",
+            "Viés (Bias):\n",
+            " tensor([-0.3955])\n",
+            "\n",
+            "Saída Ativada (Probabilidade para cada paciente):\n",
+            " tensor([[0.4000],\n",
+            "        [0.4254]])\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import torch\n",
+        "import torch.nn as nn\n",
+        "\n",
+        "# 1. Definindo a arquitetura com Forward Pass explícito\n",
+        "class NeuronioForward(nn.Module):\n",
+        "    def __init__(self, quantidade_entradas):\n",
+        "        super(NeuronioForward, self).__init__()\n",
+        "        # Camada linear: calcula (X * W) + b\n",
+        "        self.camada_linear = nn.Linear(quantidade_entradas, 1)\n",
+        "        # Função de ativação\n",
+        "        self.ativacao = nn.Sigmoid()\n",
+        "\n",
+        "    def forward(self, x):\n",
+        "        # Passo 1 do Forward Pass: Soma Ponderada + Viés\n",
+        "        soma = self.camada_linear(x)\n",
+        "        # Passo 2 do Forward Pass: Aplicação da Ativação (Sigmoide)\n",
+        "        saida = self.ativacao(soma)\n",
+        "        return soma, saida\n",
+        "\n",
+        "# 2. Instanciando o modelo\n",
+        "modelo = NeuronioForward(quantidade_entradas=3)\n",
+        "\n",
+        "# 3. Criando o Tensor de Entrada (3 atributos para 2 amostras)\n",
+        "entradas = torch.tensor([\n",
+        "    [0.85, 0.30, 0.95],\n",
+        "    [0.10, 0.15, 0.20]\n",
+        "], dtype=torch.float32)\n",
+        "\n",
+        "# 4. Executando o Forward Pass\n",
+        "soma_bruta, resultado_final = modelo(entradas)\n",
+        "\n",
+        "# 5. Exibindo os passos intermediários do Forward Pass\n",
+        "print(\"--- EXECUÇÃO DO FORWARD PASS ---\")\n",
+        "print(\"1. Entradas (X):\\n\", entradas)\n",
+        "print(\"\\n2. Soma Ponderada Brutal [Z = (X * W) + b]:\\n\", soma_bruta.detach())\n",
+        "print(\"\\n3. Saída Final Ativada [A = Sigmoid(Z)]:\\n\", resultado_final.detach())"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "DwTmuABc4Lr-",
+        "outputId": "e8564fb6-547c-420e-b441-00800534dcc0"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "--- EXECUÇÃO DO FORWARD PASS ---\n",
+            "1. Entradas (X):\n",
+            " tensor([[0.8500, 0.3000, 0.9500],\n",
+            "        [0.1000, 0.1500, 0.2000]])\n",
+            "\n",
+            "2. Soma Ponderada Brutal [Z = (X * W) + b]:\n",
+            " tensor([[-0.1677],\n",
+            "        [-0.0424]])\n",
+            "\n",
+            "3. Saída Final Ativada [A = Sigmoid(Z)]:\n",
+            " tensor([[0.4582],\n",
+            "        [0.4894]])\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import torch\n",
+        "import torch.nn as nn\n",
+        "\n",
+        "# 1. Definindo o Neurônio com Forward Pass\n",
+        "class NeuronioValorExato(nn.Module):\n",
+        "    def __init__(self):\n",
+        "        super(NeuronioValorExato, self).__init__()\n",
+        "        self.ativacao = nn.Sigmoid()\n",
+        "\n",
+        "    def forward(self, z):\n",
+        "        # Transforma o valor Z (ex: 2.1) em probabilidade via Sigmoide\n",
+        "        saida = self.ativacao(z)\n",
+        "        return saida\n",
+        "\n",
+        "# 2. Definindo explicitamente o tensor com valor Z = 2.1\n",
+        "soma_ponderada = torch.tensor([[2.1]], dtype=torch.float32)\n",
+        "\n",
+        "# 3. Executando a ativação\n",
+        "modelo = NeuronioValorExato()\n",
+        "resultado = modelo(soma_ponderada)\n",
+        "\n",
+        "# 4. Exibindo o resultado\n",
+        "print(\"--- FORWARD PASS COM Z = 2.1 ---\")\n",
+        "print(f\"Soma Ponderada (Z): {soma_ponderada.item():.1f}\")\n",
+        "print(f\"Saída Ativada [Sigmoid(2.1)]: {resultado.item():.4f}\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "YjwTgVUE4xid",
+        "outputId": "9af66456-33cd-4e4b-f11c-4c1b8a8d464d"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "--- FORWARD PASS COM Z = 2.1 ---\n",
+            "Soma Ponderada (Z): 2.1\n",
+            "Saída Ativada [Sigmoid(2.1)]: 0.8909\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import torch\n",
+        "import torch.nn as nn\n",
+        "import torch.optim as optim\n",
+        "\n",
+        "# 1. Definição do Modelo de Classificação de Crédito\n",
+        "class ClassificadorBomPagador(nn.Module):\n",
+        "    def __init__(self, quantidade_atributos):\n",
+        "        super(ClassificadorBomPagador, self).__init__()\n",
+        "        # Camada linear com 3 entradas e 1 saída\n",
+        "        self.camada_linear = nn.Linear(quantidade_atributos, 1)\n",
+        "        # Função de ativação Sigmoide (retorna probabilidade entre 0 e 1)\n",
+        "        self.ativacao = nn.Sigmoid()\n",
+        "\n",
+        "    def forward(self, x):\n",
+        "        z = self.camada_linear(x)\n",
+        "        probabilidade = self.ativacao(z)\n",
+        "        return probabilidade\n",
+        "\n",
+        "# 2. Dados de Exemplo (Normalizados entre 0 e 1)\n",
+        "# Atributos: [Renda Mensal, Relação Dívida/Renda, Histórico de Pontualidade]\n",
+        "X_clientes = torch.tensor([\n",
+        "    [0.85, 0.15, 0.95],  # Cliente 1: Renda alta, baixa dívida, ótimo histórico -> (Bom Pagador)\n",
+        "    [0.20, 0.80, 0.30],  # Cliente 2: Renda baixa, alta dívida, histórico ruim -> (Mau Pagador)\n",
+        "    [0.70, 0.35, 0.80],  # Cliente 3: Perfil equilibrado -> (Bom Pagador)\n",
+        "    [0.30, 0.70, 0.20]   # Cliente 4: Alto risco -> (Mau Pagador)\n",
+        "], dtype=torch.float32)\n",
+        "\n",
+        "# Rótulos Reais (1 = Bom Pagador, 0 = Mau Pagador)\n",
+        "y_real = torch.tensor([[1.0], [0.0], [1.0], [0.0]], dtype=torch.float32)\n",
+        "\n",
+        "# 3. Configuração do Modelo, Perda e Otimizador\n",
+        "modelo = ClassificadorBomPagador(quantidade_atributos=3)\n",
+        "criterio = nn.BCELoss()  # Binary Cross Entropy Loss\n",
+        "otimizador = optim.SGD(modelo.parameters(), lr=0.2)\n",
+        "\n",
+        "# 4. Treinamento da Rede Neural\n",
+        "print(\"--- TREINANDO O CLASSIFICADOR DE CRÉDITO ---\")\n",
+        "for epoca in range(1, 201):\n",
+        "    previsoes = modelo(X_clientes)\n",
+        "    perda = criterio(previsoes, y_real)\n",
+        "\n",
+        "    otimizador.zero_grad()\n",
+        "    perda.backward()\n",
+        "    otimizador.step()\n",
+        "\n",
+        "    if epoca % 50 == 0:\n",
+        "        print(f\"Época {epoca}/200 - Perda (Loss): {perda.item():.4f}\")\n",
+        "\n",
+        "# 5. Avaliação dos Resultados nos Clientes\n",
+        "print(\"\\n--- AVALIAÇÃO DE ANÁLISE DE CRÉDITO ---\")\n",
+        "with torch.no_grad():\n",
+        "    probabilidades = modelo(X_clientes)\n",
+        "    for i, prob in enumerate(probabilidades):\n",
+        "        prob_val = prob.item()\n",
+        "        status = \"BOM PAGADOR ✅\" if prob_val >= 0.5 else \"ALTO RISCO / MAU PAGADOR ❌\"\n",
+        "        print(f\"Cliente {i+1}: Probabilidade = {prob_val:.2%} | Decisão = {status}\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "Ci5V3KnC62Zu",
+        "outputId": "f3ab8866-32fb-462c-c8df-d18b46b6cdc5"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "--- TREINANDO O CLASSIFICADOR DE CRÉDITO ---\n",
+            "Época 50/200 - Perda (Loss): 0.3891\n",
+            "Época 100/200 - Perda (Loss): 0.2494\n",
+            "Época 150/200 - Perda (Loss): 0.1810\n",
+            "Época 200/200 - Perda (Loss): 0.1415\n",
+            "\n",
+            "--- AVALIAÇÃO DE ANÁLISE DE CRÉDITO ---\n",
+            "Cliente 1: Probabilidade = 93.99% | Decisão = BOM PAGADOR ✅\n",
+            "Cliente 2: Probabilidade = 13.02% | Decisão = ALTO RISCO / MAU PAGADOR ❌\n",
+            "Cliente 3: Probabilidade = 82.35% | Decisão = BOM PAGADOR ✅\n",
+            "Cliente 4: Probabilidade = 15.44% | Decisão = ALTO RISCO / MAU PAGADOR ❌\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# 1. Definindo dados de NOVOS clientes (nunca vistos no treinamento)\n",
+        "# Atributos: [Renda Mensal, Relação Dívida/Renda, Histórico de Pontualidade]\n",
+        "novos_clientes = torch.tensor([\n",
+        "    [0.90, 0.10, 0.90],  # Cliente A: Renda altíssima, baixíssima dívida, ótimo histórico\n",
+        "    [0.15, 0.90, 0.10],  # Cliente B: Renda baixa, dívida extrema, histórico péssimo\n",
+        "    [0.60, 0.40, 0.60]   # Cliente C: Perfil intermediário/mediano\n",
+        "], dtype=torch.float32)\n",
+        "\n",
+        "# 2. Executando a avaliação sem calcular gradientes (no_grad)\n",
+        "print(\"--- PREDIÇÃO PARA NOVOS CLIENTES ---\")\n",
+        "with torch.no_grad():\n",
+        "    probabilidades_novos = modelo(novos_clientes)\n",
+        "\n",
+        "    for i, prob in enumerate(probabilidades_novos):\n",
+        "        prob_val = prob.item()\n",
+        "        status = \"BOM PAGADOR ✅\" if prob_val >= 0.5 else \"ALTO RISCO / MAU PAGADOR ❌\"\n",
+        "        print(f\"Novo Cliente {chr(65+i)}: Probabilidade = {prob_val:.2%} | Decisão = {status}\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "WjeH3lXr70KU",
+        "outputId": "1cb2c161-a62c-4798-fd5d-8654693ce9de"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "--- PREDIÇÃO PARA NOVOS CLIENTES ---\n",
+            "Novo Cliente A: Probabilidade = 94.53% | Decisão = BOM PAGADOR ✅\n",
+            "Novo Cliente B: Probabilidade = 5.84% | Decisão = ALTO RISCO / MAU PAGADOR ❌\n",
+            "Novo Cliente C: Probabilidade = 66.89% | Decisão = BOM PAGADOR ✅\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import math\n",
+        "\n",
+        "\n",
+        "def sigmoide(x):\n",
+        "    return 1 / (1 + math.exp(-x))\n",
+        "\n",
+        "\n",
+        "# 1. Entradas (ex: duas características de um dado)\n",
+        "entradas = [2.0, 3.0]\n",
+        "\n",
+        "# 2. Pesos e Viés (iniciados com valores genéricos)\n",
+        "pesos = [0.8, -0.5]\n",
+        "vies = 0.1\n",
+        "\n",
+        "# 3. Soma Ponderada: (2.0 * 0.8) + (3.0 * -0.5) + 0.1\n",
+        "soma_ponderada = sum(e * p for e, p in zip(entradas, pesos)) + vies\n",
+        "\n",
+        "# 4. Saída do Neurônio (passada pela função de ativação)\n",
+        "saida = sigmoide(soma_ponderada)\n",
+        "\n",
+        "print(f\"Soma ponderada: {soma_ponderada}\")\n",
+        "print(f\"Saida do neuronio: {saida:.4f}\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "g81NgezD8_Mk",
+        "outputId": "e7e61112-63c0-4e8c-9d63-fabcf9e5b596"
+      },
+      "execution_count": 1,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Soma ponderada: 0.2000000000000001\n",
+            "Saida do neuronio: 0.5498\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import torch\n",
+        "import torch.nn as nn\n",
+        "import torch.optim as optim\n",
+        "\n",
+        "# 1. Definição da estrutura do Neurônio\n",
+        "class ClassificadorCredito(nn.Module):\n",
+        "    def __init__(self, entradas):\n",
+        "        super(ClassificadorCredito, self).__init__()\n",
+        "        self.camada_linear = nn.Linear(entradas, 1)\n",
+        "        self.ativacao = nn.Sigmoid()\n",
+        "\n",
+        "    def forward(self, x):\n",
+        "        z = self.camada_linear(x)\n",
+        "        return self.ativacao(z)\n",
+        "\n",
+        "# 2. Dados dos Clientes: [Renda, Dívida, Histórico]\n",
+        "X_clientes = torch.tensor([\n",
+        "    [0.85, 0.15, 0.95],  # Cliente 1: Renda alta, dívida baixa, ótimo histórico -> Bom\n",
+        "    [0.20, 0.80, 0.30],  # Cliente 2: Renda baixa, dívida alta, histórico ruim -> Mau\n",
+        "    [0.70, 0.35, 0.80],  # Cliente 3: Perfil equilibrado -> Bom\n",
+        "    [0.30, 0.70, 0.20]   # Cliente 4: Alto risco -> Mau\n",
+        "], dtype=torch.float32)\n",
+        "\n",
+        "# Respostas esperadas (1 = Bom Pagador, 0 = Mau Pagador)\n",
+        "y_real = torch.tensor([[1.0], [0.0], [1.0], [0.0]], dtype=torch.float32)\n",
+        "\n",
+        "# 3. Configuração do Modelo, Função de Perda e Otimizador\n",
+        "modelo = ClassificadorCredito(entradas=3)\n",
+        "criterio = nn.BCELoss()  # Erro por Entropia Cruzada\n",
+        "otimizador = optim.SGD(modelo.parameters(), lr=0.2)  # Gradiente Descendente\n",
+        "\n",
+        "# 4. Loop de Aprendizado (Treinamento por 200 épocas)\n",
+        "print(\"--- INICIANDO TREINAMENTO ---\")\n",
+        "for epoca in range(1, 201):\n",
+        "    previsoes = modelo(X_clientes)        # 1. Previsão (Forward)\n",
+        "    perda = criterio(previsoes, y_real)   # 2. Cálculo do Erro (Loss)\n",
+        "\n",
+        "    otimizador.zero_grad()               # Limpa gradientes anteriores\n",
+        "    perda.backward()                     # 3. Retropropagação (Backpropagation)\n",
+        "    otimizador.step()                    # 4. Ajuste dos Pesos (Step)\n",
+        "\n",
+        "    if epoca % 50 == 0:\n",
+        "        print(f\"Época {epoca}/200 - Perda (Loss): {perda.item():.4f}\")\n",
+        "\n",
+        "# 5. Avaliação Final nos Clientes\n",
+        "print(\"\\n--- RESULTADO FINAL ---\")\n",
+        "with torch.no_grad():\n",
+        "    probabilidades = modelo(X_clientes)\n",
+        "    for i, prob in enumerate(probabilidades):\n",
+        "        status = \"BOM PAGADOR ✅\" if prob.item() >= 0.5 else \"MAU PAGADOR / RISCO ❌\"\n",
+        "        print(f\"Cliente {i+1}: Probabilidade = {prob.item():.2%} | Status = {status}\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "UVHpmLLN9h61",
+        "outputId": "f6da2536-7c5d-4380-e9ff-86bf4c656fa0"
+      },
+      "execution_count": 2,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "--- INICIANDO TREINAMENTO ---\n",
+            "Época 50/200 - Perda (Loss): 0.3339\n",
+            "Época 100/200 - Perda (Loss): 0.2243\n",
+            "Época 150/200 - Perda (Loss): 0.1673\n",
+            "Época 200/200 - Perda (Loss): 0.1330\n",
+            "\n",
+            "--- RESULTADO FINAL ---\n",
+            "Cliente 1: Probabilidade = 94.59% | Status = BOM PAGADOR ✅\n",
+            "Cliente 2: Probabilidade = 11.72% | Status = MAU PAGADOR / RISCO ❌\n",
+            "Cliente 3: Probabilidade = 83.07% | Status = BOM PAGADOR ✅\n",
+            "Cliente 4: Probabilidade = 15.13% | Status = MAU PAGADOR / RISCO ❌\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Dados de NOVOS clientes: [Renda, Dívida, Histórico]\n",
+        "novos_clientes = torch.tensor([\n",
+        "    [0.90, 0.10, 0.90],  # Cliente A: Renda alta, baixa dívida, ótimo histórico\n",
+        "    [0.15, 0.90, 0.10],  # Cliente B: Renda baixa, dívida alta, histórico ruim\n",
+        "    [0.60, 0.40, 0.60]   # Cliente C: Perfil mediano\n",
+        "], dtype=torch.float32)\n",
+        "\n",
+        "print(\"--- PREDIÇÃO PARA NOVOS CLIENTES ---\")\n",
+        "with torch.no_grad():\n",
+        "    probabilidades_novas = modelo(novos_clientes)\n",
+        "    for i, prob in enumerate(probabilidades_novas):\n",
+        "        letra = chr(65 + i) # A, B, C...\n",
+        "        status = \"BOM PAGADOR ✅\" if prob.item() >= 0.5 else \"MAU PAGADOR / RISCO ❌\"\n",
+        "        print(f\"Novo Cliente {letra}: Probabilidade = {prob.item():.2%} | Status = {status}\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "O2alQWc2-byc",
+        "outputId": "e0665ff7-9f31-4d92-8f10-95ce076b174f"
+      },
+      "execution_count": 3,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "--- PREDIÇÃO PARA NOVOS CLIENTES ---\n",
+            "Novo Cliente A: Probabilidade = 95.30% | Status = BOM PAGADOR ✅\n",
+            "Novo Cliente B: Probabilidade = 5.31% | Status = MAU PAGADOR / RISCO ❌\n",
+            "Novo Cliente C: Probabilidade = 68.06% | Status = BOM PAGADOR ✅\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Exibindo os parâmetros internos aprendidos pelo neurônio\n",
+        "pesos = modelo.camada_linear.weight.data[0]\n",
+        "vies = modelo.camada_linear.bias.data[0]\n",
+        "\n",
+        "print(\"--- O CÉREBRO DO NEURÔNIO (PESOS APRENDIDOS) ---\")\n",
+        "print(f\"Peso Renda (w1):     {pesos[0]:.4f}\")\n",
+        "print(f\"Peso Dívida (w2):    {pesos[1]:.4f}\")\n",
+        "print(f\"Peso Histórico (w3): {pesos[2]:.4f}\")\n",
+        "print(f\"Viés / Bias (b):     {vies:.4f}\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "4es0Y_Ud-14F",
+        "outputId": "77f004d5-df72-4c62-e8ce-d5bf77fa201e"
+      },
+      "execution_count": 4,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "--- O CÉREBRO DO NEURÔNIO (PESOS APRENDIDOS) ---\n",
+            "Peso Renda (w1):     2.3330\n",
+            "Peso Dívida (w2):    -2.8951\n",
+            "Peso Histórico (w3): 2.2808\n",
+            "Viés / Bias (b):     -0.8539\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import torch\n",
+        "import torch.nn as nn\n",
+        "import torch.optim as optim\n",
+        "\n",
+        "# 1. Arquitetura da Rede Neural Multicamadas (MLP)\n",
+        "class RedeNeuralCredito(nn.Module):\n",
+        "    def __init__(self, entradas):\n",
+        "        super(RedeNeuralCredito, self).__init__()\n",
+        "        # Camada Oculta: recebe as 3 entradas e passa para 4 neurônios internos\n",
+        "        self.camada_oculta = nn.Linear(entradas, 4)\n",
+        "        self.relu = nn.ReLU() # Função de Ativação não-linear para a camada oculta\n",
+        "\n",
+        "        # Camada de Saída: recebe os 4 neurônios internos e reduz para 1 probabilidade final\n",
+        "        self.camada_saida = nn.Linear(4, 1)\n",
+        "        self.sigmoide = nn.Sigmoid()\n",
+        "\n",
+        "    def forward(self, x):\n",
+        "        # Passo 1: Passa pela camada oculta + ReLU\n",
+        "        x = self.relu(self.camada_oculta(x))\n",
+        "        # Passo 2: Passa pela camada de saída + Sigmoide\n",
+        "        x = self.sigmoide(self.camada_saida(x))\n",
+        "        return x\n",
+        "\n",
+        "# 2. Reutilizando os dados de clientes\n",
+        "X_clientes = torch.tensor([\n",
+        "    [0.85, 0.15, 0.95],  # Cliente 1: Bom\n",
+        "    [0.20, 0.80, 0.30],  # Cliente 2: Mau\n",
+        "    [0.70, 0.35, 0.80],  # Cliente 3: Bom\n",
+        "    [0.30, 0.70, 0.20]   # Cliente 4: Mau\n",
+        "], dtype=torch.float32)\n",
+        "\n",
+        "y_real = torch.tensor([[1.0], [0.0], [1.0], [0.0]], dtype=torch.float32)\n",
+        "\n",
+        "# 3. Instanciando o novo modelo, erro e otimizador\n",
+        "rede_modelo = RedeNeuralCredito(entradas=3)\n",
+        "criterio = nn.BCELoss()\n",
+        "otimizador = optim.Adam(rede_modelo.parameters(), lr=0.01) # Usando o otimizador Adam\n",
+        "\n",
+        "# 4. Loop de Treinamento\n",
+        "print(\"--- TREINANDO A REDE NEURAL MULTICAMADAS ---\")\n",
+        "for epoca in range(1, 301):\n",
+        "    previsoes = rede_modelo(X_clientes)\n",
+        "    perda = criterio(previsoes, y_real)\n",
+        "\n",
+        "    otimizador.zero_grad()\n",
+        "    perda.backward()\n",
+        "    otimizador.step()\n",
+        "\n",
+        "    if epoca % 100 == 0:\n",
+        "        print(f\"Época {epoca}/300 - Perda (Loss): {perda.item():.4f}\")\n",
+        "\n",
+        "# 5. Testando a Rede em Novos Clientes\n",
+        "novos_clientes = torch.tensor([\n",
+        "    [0.90, 0.10, 0.90],  # Cliente A (Perfil ótimo)\n",
+        "    [0.15, 0.90, 0.10],  # Cliente B (Risco alto)\n",
+        "    [0.60, 0.40, 0.60]   # Cliente C (Perfil mediano)\n",
+        "], dtype=torch.float32)\n",
+        "\n",
+        "print(\"\\n--- TESTANDO A REDE EM NOVOS CLIENTES ---\")\n",
+        "with torch.no_grad():\n",
+        "    probabilidades = rede_modelo(novos_clientes)\n",
+        "    for i, prob in enumerate(probabilidades):\n",
+        "        letra = chr(65 + i)\n",
+        "        status = \"BOM PAGADOR ✅\" if prob.item() >= 0.5 else \"MAU PAGADOR / RISCO ❌\"\n",
+        "        print(f\"Novo Cliente {letra}: Probabilidade = {prob.item():.2%} | Status = {status}\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "yQj26VDU_uOk",
+        "outputId": "ca10e8ee-23fc-4153-ee42-edadb39b7349"
+      },
+      "execution_count": 5,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "--- TREINANDO A REDE NEURAL MULTICAMADAS ---\n",
+            "Época 100/300 - Perda (Loss): 0.0635\n",
+            "Época 200/300 - Perda (Loss): 0.0100\n",
+            "Época 300/300 - Perda (Loss): 0.0041\n",
+            "\n",
+            "--- TESTANDO A REDE EM NOVOS CLIENTES ---\n",
+            "Novo Cliente A: Probabilidade = 99.99% | Status = BOM PAGADOR ✅\n",
+            "Novo Cliente B: Probabilidade = 0.25% | Status = MAU PAGADOR / RISCO ❌\n",
+            "Novo Cliente C: Probabilidade = 92.24% | Status = BOM PAGADOR ✅\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import torch\n",
+        "import torch.nn as nn\n",
+        "import torch.optim as optim\n",
+        "\n",
+        "# 1. Vocabulário: Mapeando cada palavra para um número (Tokenização)\n",
+        "vocabulario = {\n",
+        "    \"<PAD>\": 0, \"excelente\": 1, \"horrivel\": 2, \"bom\": 3,\n",
+        "    \"ruim\": 4, \"produto\": 5, \"servico\": 6, \"muito\": 7\n",
+        "}\n",
+        "\n",
+        "# 2. Dataset simples: Frases representadas por números e seus rótulos (1 = Positivo, 0 = Negativo)\n",
+        "# Frase 1: \"produto excelente\" -> [5, 1] (Positivo)\n",
+        "# Frase 2: \"servico horrivel\"  -> [6, 2] (Negativo)\n",
+        "# Frase 3: \"muito bom\"          -> [7, 3] (Positivo)\n",
+        "# Frase 4: \"muito ruim\"         -> [7, 4] (Negativo)\n",
+        "\n",
+        "X_texto = torch.tensor([\n",
+        "    [5, 1],\n",
+        "    [6, 2],\n",
+        "    [7, 3],\n",
+        "    [7, 4]\n",
+        "], dtype=torch.long)\n",
+        "\n",
+        "y_sentimento = torch.tensor([[1.0], [0.0], [1.0], [0.0]], dtype=torch.float32)\n",
+        "\n",
+        "# 3. Criando a Rede Neural com camada de Embedding\n",
+        "class ClassificadorTexto(nn.Module):\n",
+        "    def __init__(self, tamanho_vocab, dim_embedding):\n",
+        "        super(ClassificadorTexto, self).__init__()\n",
+        "        # Embedding: Transforma números em vetores densos de significados\n",
+        "        self.embedding = nn.Embedding(tamanho_vocab, dim_embedding)\n",
+        "        self.camada_oculta = nn.Linear(dim_embedding, 4)\n",
+        "        self.relu = nn.ReLU()\n",
+        "        self.saida = nn.Linear(4, 1)\n",
+        "        self.sigmoide = nn.Sigmoid()\n",
+        "\n",
+        "    def forward(self, x):\n",
+        "        # 1. Transforma palavras em vetores e tira a média da frase\n",
+        "        embeds = self.embedding(x)\n",
+        "        vetor_frase = embeds.mean(dim=1)\n",
+        "\n",
+        "        # 2. Passa pelas camadas neurais\n",
+        "        x = self.relu(self.camada_oculta(vetor_frase))\n",
+        "        x = self.sigmoide(self.saida(x))\n",
+        "        return x\n",
+        "\n",
+        "# 4. Instanciando e Treinando\n",
+        "modelo_nlp = ClassificadorTexto(tamanho_vocab=len(vocabulario), dim_embedding=8)\n",
+        "criterio = nn.BCELoss()\n",
+        "otimizador = optim.Adam(modelo_nlp.parameters(), lr=0.05)\n",
+        "\n",
+        "print(\"--- TREINANDO MODELO DE NLP ---\")\n",
+        "for epoca in range(1, 201):\n",
+        "    previsoes = modelo_nlp(X_texto)\n",
+        "    perda = criterio(previsoes, y_sentimento)\n",
+        "\n",
+        "    otimizador.zero_grad()\n",
+        "    perda.backward()\n",
+        "    otimizador.step()\n",
+        "\n",
+        "    if epoca % 50 == 0:\n",
+        "        print(f\"Época {epoca}/200 - Perda: {perda.item():.4f}\")\n",
+        "\n",
+        "# 5. Testando em novas frases:\n",
+        "# Nova Frase A: \"bom produto\" -> [3, 5]\n",
+        "# Nova Frase B: \"ruim servico\" -> [4, 6]\n",
+        "novas_frases = torch.tensor([\n",
+        "    [3, 5],\n",
+        "    [4, 6]\n",
+        "], dtype=torch.long)\n",
+        "\n",
+        "print(\"\\n--- AVALIANDO SENTIMENTO DE NOVAS FRASES ---\")\n",
+        "with torch.no_grad():\n",
+        "    resul = modelo_nlp(novas_frases)\n",
+        "    print(f\"Frase 'bom produto': {resul[0].item():.2%} -> {'POSITIVA ✅' if resul[0] >= 0.5 else 'NEGATIVA ❌'}\")\n",
+        "    print(f\"Frase 'ruim servico': {resul[1].item():.2%} -> {'POSITIVA ✅' if resul[1] >= 0.5 else 'NEGATIVA ❌'}\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "7OSxUiNMBqno",
+        "outputId": "779a34a8-77fc-4946-e9ac-e2aed32c6b41"
+      },
+      "execution_count": 6,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "--- TREINANDO MODELO DE NLP ---\n",
+            "Época 50/200 - Perda: 0.0000\n",
+            "Época 100/200 - Perda: 0.0000\n",
+            "Época 150/200 - Perda: 0.0000\n",
+            "Época 200/200 - Perda: 0.0000\n",
+            "\n",
+            "--- AVALIANDO SENTIMENTO DE NOVAS FRASES ---\n",
+            "Frase 'bom produto': 100.00% -> POSITIVA ✅\n",
+            "Frase 'ruim servico': 0.00% -> NEGATIVA ❌\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
